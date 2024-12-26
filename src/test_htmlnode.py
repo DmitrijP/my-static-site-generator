@@ -51,13 +51,37 @@ class TestHTMLNode(unittest.TestCase):
         text = node.to_html()
         self.assertEqual(text, '<a href="http://www.boot.dev" target="_blank">Hallo wie geht es dir?</a>')
         
+    def test_no_children_to_html(self):
+        node2 = HTMLNode()
+        node = HTMLNode(children=[node2])
+        text = node.children_to_html()
+        self.assertEqual(text, '')
+    
+    def test_children_without_value_to_html(self):
+        node2 = HTMLNode(tag="a")
+        node = HTMLNode(children=[node2])
+        text = node.children_to_html()
+        self.assertEqual(text, '<a></a>')
+        
+    def test_one_children_to_html(self):
+        node2 = HTMLNode(tag="a", value="Hallo wie geht es dir?")
+        node = HTMLNode(children=[node2])
+        text = node.children_to_html()
+        self.assertEqual(text, '<a>Hallo wie geht es dir?</a>')
+
+    def test_3children_to_html(self):
+        node2 = HTMLNode(tag="a", value="Hallo wie geht es dir?")
+        node = HTMLNode(children=[node2, node2, node2])
+        text = node.children_to_html()
+        self.assertEqual(text, '<a>Hallo wie geht es dir?</a><a>Hallo wie geht es dir?</a><a>Hallo wie geht es dir?</a>')
+
     def test_tag_two_props_and_child_to_html(self):
         props = {
             'href' : 'http://www.boot.dev',
             'target' : '_blank'
         }
-        node2 = HTMLNode(tag="a", value="Hallo wie geht es dir?", props=props)
+        node2 = HTMLNode(tag="a", value="Hallo wie geht es dir?")
         node = HTMLNode(tag="a", value="Hallo wie geht es dir?", props=props, children=[node2])
         text = node.to_html()
-        self.assertEqual(text, '<a href="http://www.boot.dev" target="_blank">Hallo wie geht es dir?</a>')
-        
+        self.assertEqual(text, '<a href="http://www.boot.dev" target="_blank">Hallo wie geht es dir?<a>Hallo wie geht es dir?</a></a>')
+    
