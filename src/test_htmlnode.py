@@ -85,3 +85,5 @@ class TestHTMLNode(unittest.TestCase):
         text = node.to_html()
         self.assertEqual(text, '<a href="http://www.boot.dev" target="_blank">Hallo wie geht es dir?<a>Hallo wie geht es dir?</a></a>')
     
+if __name__ == "__main__":
+    unittest.main()
